@@ -98,7 +98,19 @@ const Camera = () => {
 
   const downloadStrip = async () => {
     const element = document.getElementById("result-strip");
-    const canvas = await html2canvas(element, { scale: 2 }); 
+    
+    // Pastikan layout dan elemen ada sebelum mencoba rendering
+    if (!element || !selectedLayout) return;
+
+    const canvas = await html2canvas(element, {
+      scale: 2, // Tetapkan skala resolusi (2x)
+      // *** TAMBAHKAN INI UNTUK MEMASTIKAN DIMENSI SUMBER DIPERHITUNGKAN ***
+      width: selectedLayout.canvasSize.width,
+      height: selectedLayout.canvasSize.height,
+      // *** TAMBAHKAN INI JIKA FRAME/GAMBAR BERASAL DARI URL EKSTERNAL ***
+      useCORS: true, 
+    }); 
+    
     const data = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.href = data;
@@ -162,26 +174,42 @@ const Camera = () => {
               mirrored = {true}
             />
 
-            {/* Tampilan Hitung Mundur (Tanpa Latar Belakang Hitam Menyeluruh) */}
+            {/* Tampilan Hitung Mundur (Sudah Dipusatkan) */}
             {countdown > 0 && (
               <div className="absolute inset-0 flex items-center justify-center rounded-xl z-20 pointer-events-none">
-                <p className="text-pink-500 text-9xl font-extrabold animate-pulse text-center">
+                {/* Tambahkan ml-[-2] di sini */}
+                <p className="text-pink-500 text-9xl font-extrabold animate-pulse text-center w-full"> 
                   {countdown}
                 </p>
               </div>
             )}
           </div>
           
-          {/* Tombol Foto */}
+          {/* Tombol Foto BARU */}
           <button
-            onClick={startPhotoProcess} // Menggunakan fungsi proses yang baru
-            disabled={isCapturing} 
-            className={`text-white px-4 py-2 rounded transition 
-              ${isCapturing ? 'bg-gray-400 cursor-not-allowed' : 'bg-pink-500 hover:bg-pink-600'}`}
+            onClick={startPhotoProcess}
+            disabled={isCapturing} 
+            className={`
+              text-white 
+              w-11/12 max-w-md
+              h-16 transition flex items-center justify-center font-bold shadow-lg
+              ${isCapturing
+                ? 'bg-gray-400 cursor-not-allowed text-xl rounded-full' 
+                : 'bg-[#FF4081] hover:bg-[#E03A72] text-xl rounded-full whitespace-nowrap' 
+              }
+            `}
           >
-            {isCapturing 
-              ? `Siap... ${countdown > 0 ? countdown : 'Ambil!'}` 
-              : `Ambil Foto ${photos.length + 1}`
+            {isCapturing 
+              ? `Siap... ${countdown > 0 ? countdown : 'Ambil!'}` 
+              : (
+                <span className="flex items-center gap-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-10 **mr-[-2]**" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.218A2 2 0 0110.127 4h3.746a2 2 0 011.664.89l.812 1.218A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {photos.length === 0 ? 'Mulai Foto' : `Ambil Foto ${photos.length + 1}`}
+                </span>
+              )
             }
           </button>
         </>
