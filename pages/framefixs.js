@@ -1,5 +1,5 @@
 "use client";
-import Header from '/components/Header';
+import Header from '../components/Header';
 import React from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
