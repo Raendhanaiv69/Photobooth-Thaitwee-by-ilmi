@@ -1,44 +1,63 @@
-import Header from '../components/Header';
-import { useRouter } from 'next/router';
-import Head from "next/head";
-import Image from "next/image";
+import React from 'react';
+import { useRouter } from 'next/router'; 
+// Asumsi Anda menggunakan Next.js karena ada 'next/router'
 
-export default function Home() {
-  const router = useRouter();
+// --- PENTING: Import komponen Header di sini ---
+import Header from '../components/Header'; // Sesuaikan path ini jika perlu
 
-  return (
-    <>
-      <Head>
-        <title>PhotoBooth Online</title>
-      </Head>
+const LandingPage = () => {
+    const router = useRouter();
+    
+    // URL gambar untuk header (Ganti dengan URL gambar photobooth Anda)
+    const HEADER_IMAGE_URL = "/images/Header1.png"; 
 
-      <Header />
+    return (
+        <>
+            {/* Tempatkan Header di sini */}
+            <Header />
 
-      <main className="min-h-screen bg-sky-100 flex flex-col items-center text-center px-4 py-16">
-        
-        {/* Kontainer Judul Utama */}
-        <div className="mb-10">
-          <div className="text-pink-400 text-6xl mb-2">
-            📷
-          </div>
-          <h1 className="text-pink-600 font-semibold text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Photobooth Online
-          </h1>
-          <p className="text-purple-400 text-md sm:text-lg md:text-xl mt-2">
-            take your photo with your favorite actor's character
-          </p>
-        </div>
+            <main className="min-h-screen bg-white flex flex-col items-center text-center px-4 py-16">
+                
+                {/* Header Gambar Photobooth */}
+                <div className="w-full max-w-2xl sm:max-w-4xl h-48 sm:h-64 mb-10 overflow-hidden rounded-lg shadow-xl">
+                    <img 
+                        src={HEADER_IMAGE_URL} 
+                        alt="Photobooth setup with film strips and photos" 
+                        className="w-full h-full object-cover"
+                    />
+                </div>
 
-        {/* Tombol Mulai */}
-        <button
-          onClick={() => router.push('/select-frame')}
-          className="mt-6 bg-yellow-200 hover:bg-yellow-300 text-pink-600 font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105"
-        >
-          Let&apos;s Go Start
-        </button>
+                {/* Kontainer Judul Utama */}
+                <div className="mb-10 w-full max-w-lg">
+                    <h1 className="text-gray-800 font-bold text-5xl sm:text-6xl md:text-7xl">
+                        Photobooth Online
+                    </h1>
+                    <p className="text-gray-600 text-lg sm:text-xl md:text-2xl mt-4">
+                        take your photo with your favorite actor&apos;s character
+                    </p>
+                </div>
 
-        
-      </main>
-    </>
-  );
-}
+                {/* Tombol Mulai (Warna Pink/Soft) */}
+                <button
+                    onClick={() => router.push('/framefixs')}
+                    className="
+                        mt-6 
+                        bg-pink-400 hover:bg-gray-200
+                        text-gray-800 font-bold 
+                        py-4 px-16 sm:py-5 sm:px-20 
+                        rounded-full 
+                        text-xl sm:text-2xl
+                        shadow-lg transition duration-300 transform hover:scale-[1.03]
+                        w-full max-w-md
+                    "
+                   
+                >
+                    Let&apos;s Go Start
+                </button>
+                
+            </main>
+        </>
+    );
+};
+
+export default LandingPage;

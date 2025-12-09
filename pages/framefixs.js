@@ -44,7 +44,7 @@ const ChooseFrame = () => {
   };
 
   return (
-    <div className="min-h-screen bg-sky-100">
+    <div className="min-h-screen bg-white">
       <Header />
 
       <main className="flex flex-col items-center text-center px-4 py-10">
